@@ -4,40 +4,99 @@ import os
 from io import BytesIO
 import openpyxl  # Ensure OpenPyXL is installed for Excel handling
 
-# Set up Modern UI
-st.set_page_config(page_title="💿 Data Sweeper | Convert & Clean Data", layout='wide', page_icon="🔄")
-st.title("💿 Data Sweeper - File Converter & Data Cleaner")
-st.write("🚀 Convert CSV ↔️ Excel | Remove Duplicates | Fill Missing Data | Visualize & Optimize Your Data Instantly!")
+# Set up Modern UI with Dark Theme and Glassmorphism
+st.set_page_config(page_title="💿 Data Sweeper", layout='wide', page_icon="🔄")
 
-# Mobile Indication Message
-if st.session_state.get('is_mobile', False):
-    st.markdown(
-        """
-        <div style="text-align:center; background-color:#ffcc00; padding:10px; border-radius:10px; font-size:18px;">
-            📱 **Use the sidebar to upload files** 📂
-        </div>
-        """, unsafe_allow_html=True
-    )
+# Apply Custom CSS for Enhanced Dark Theme and Glassmorphism
+st.markdown(
+    """
+    <style>
+        body {
+            background-color: #0a0a0a; /* Deeper dark */
+            color: #f0f0f0; /* Lighter text */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
+        }
+        .stApp {
+            background-color: #0a0a0a;
+        }
+        .css-1adrfps { /* This class targets the main container */
+            background-color: #0a0a0a;
+            color: #f0f0f0;
+        }
+        .stTextInput>label, .stNumberInput>label, .stSelectbox>label, .stMultiSelect>label {
+            color: #f0f0f0;
+        }
+        .css-16idsys p, .css-16idsys div, .css-1adrfps h1, .css-1adrfps h2, .css-1adrfps h3, .css-1adrfps h4, .css-1adrfps h5, .css-1adrfps h6 {
+           color: #f0f0f0;
+        }
+        .sidebar .sidebar-content {
+            background-color: rgba(30, 30, 30, 0.5); /* Darker glass */
+            backdrop-filter: blur(15px); /* Stronger blur */
+            border: 1px solid rgba(255, 255, 255, 0.05); /* Subtle border */
+            color: #f0f0f0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Add shadow for depth */
+        }
+        .streamlit-expanderHeader {
+            color: #f0f0f0 !important;
+            transition: color 0.3s ease;
+        }
+        .streamlit-expanderHeader:hover {
+            color: #ffffff !important; /* Highlight expander */
+        }
+        .stButton>button {
+            background-color: #222; /* Darker button */
+            color: #f0f0f0;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.2s ease; /* Enhanced transition */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .stButton>button:active {
+            transform: scale(0.95);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3); /* Less shadow on press */
+        }
+        .stDownloadButton>button {
+            background-color: #388e3c; /* Darker green */
+            color: #f0f0f0;
+            border: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        .stDownloadButton>button:active {
+            transform: scale(0.95);
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+        }
+        .stAlert {
+            background-color: rgba(30, 30, 30, 0.7); /* Opaque alert */
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            color: #f0f0f0;
+            border-radius: 5px; /* Rounded corners */
+        }
+        .dataframe {
+            color: #f0f0f0;
+        }
+        table {
+            color: #f0f0f0;
+        }
+        .stProgress>div>div>div {
+            background-color: #388e3c; /* Green progress bar */
+        }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
-# Sidebar UI
-st.sidebar.image("https://cdn-icons-png.flaticon.com/512/4228/4228684.png", width=120)
-st.sidebar.title("🔧 Data Sweeper Tools - Optimize Your Data!")
-st.sidebar.markdown("### 📂 Upload & Process Files")
-st.sidebar.image("https://cdn-icons-png.flaticon.com/512/3135/3135715.png", width=50)  # Professional icon
+st.title("💿 Data Sweeper - File Converter")
+st.write("🚀 Convert CSV ↔️ Excel | Remove Duplicates | Fill Missing Data | Visualize Your Data Instantly!")
 
-# Developer Credit
-st.sidebar.markdown("---")
-st.sidebar.markdown("### 🛠️ Developed By")
-st.sidebar.markdown("**Muhammad Ans Jamshaid | Data Processing Expert**")
-st.sidebar.markdown("---")
-
-# File Uploader
-uploaded_files = st.sidebar.file_uploader(
+# File Uploader in the Main Body
+st.markdown("### 📂 Upload Your Files")
+st.image("https://cdn-icons-png.flaticon.com/512/3135/3135715.png", width=50)  # Professional icon
+uploaded_files = st.file_uploader(
     "Upload CSV or Excel files:", type=["csv", "xlsx"], accept_multiple_files=True
 )
 
 if uploaded_files:
-    st.sidebar.success("✅ Files Uploaded & Ready for Processing!")
+    st.success("✅ Files Uploaded Successfully!")
     for file in uploaded_files:
         file_ext = os.path.splitext(file.name)[-1].lower()
         
@@ -55,16 +114,16 @@ if uploaded_files:
             continue
 
         # Display File Details
-        st.sidebar.markdown(f"**📄 File:** `{file.name}`")
-        st.sidebar.markdown(f"**📏 Size:** `{file.size / 1024:.2f} KB`")
+        st.markdown(f"**📄 File:** `{file.name}`")
+        st.markdown(f"**📏 Size:** `{file.size / 1024:.2f} KB`")
 
         # Data Preview
         st.subheader("🔍 Data Preview")
         st.dataframe(df.head())
 
         # Data Cleaning Options
-        st.subheader("🛠 Data Cleaning & Optimization")
-        enable_cleaning = st.sidebar.checkbox(f"✅ Enable Cleaning for {file.name}")
+        st.subheader("🛠 Data Cleaning Options")
+        enable_cleaning = st.checkbox(f"✅ Enable Cleaning for {file.name}")
 
         if enable_cleaning:
             col1, col2 = st.columns(2)
@@ -79,22 +138,22 @@ if uploaded_files:
                 if st.button(f"📊 Fill Missing Values ({file.name})"):
                     numeric_cols = df.select_dtypes(include=['number']).columns
                     df[numeric_cols] = df[numeric_cols].fillna(df[numeric_cols].mean())
-                    st.success("✅ **Missing Values Filled for Numeric Columns!**")
+                    st.success("✅ **Missing Values Filled!**")
 
         # Column Selection
-        st.subheader("🎯 Select Columns for Conversion & Analysis")
+        st.subheader("🎯 Select Columns for Conversion")
         selected_columns = st.multiselect(f"Choose Columns for {file.name}", df.columns, default=df.columns)
         df = df[selected_columns]
 
         # Data Visualization
-        st.subheader("📊 Data Insights & Visualization")
-        show_charts = st.sidebar.checkbox(f"📈 Show Charts for {file.name}")
+        st.subheader("📊 Data Visualization")
+        show_charts = st.checkbox(f"📈 Show Charts for {file.name}")
         if show_charts:
             st.bar_chart(df.select_dtypes(include='number').iloc[:, :2])
 
         # File Conversion Options
-        st.subheader("🔄 File Conversion & Download")
-        conversion_type = st.sidebar.radio(f"Convert {file.name} to:", ["CSV", "Excel"], key=file.name)
+        st.subheader("🔄 File Conversion")
+        conversion_type = st.radio(f"Convert {file.name} to:", ["CSV", "Excel"], key=file.name)
         if st.button(f"Convert {file.name}"):
             buffer = BytesIO()
             if conversion_type == "CSV":
@@ -115,4 +174,15 @@ if uploaded_files:
                 mime=mime_type
             )
 
-st.sidebar.info("🚀 All Files Processed & Optimized Successfully!")
+# Sidebar UI
+with st.sidebar:
+    st.image("https://cdn-icons-png.flaticon.com/512/4228/4228684.png", width=120)
+    st.title("🔧 Data Sweeper Tools")
+
+    # Developer Credit (Animated)
+    st.markdown("---")
+    st.markdown("### 🛠️ Developed By")
+    st.markdown("<div style='animation: fadeIn 2s;'>**Muhammad Ans Jamshaid**</div>", unsafe_allow_html=True)
+    st.markdown("---")
+
+    st.info("🚀 All Files Processed Successfully!")
