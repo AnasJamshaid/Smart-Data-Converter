@@ -6,13 +6,13 @@ import openpyxl
 import plotly.express as px
 
 # Set Page Config
-st.set_page_config(page_title="💿 Data Sweeper", layout="wide", page_icon="🔄")
+st.set_page_config(page_title="💿 Data Sweeper - by Muhammad Anas Jamshaid", layout="wide", page_icon="🔄")
 
 # Custom Glassmorphism CSS
 st.markdown("""
     <style>
         body {
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            background: linear-gradient(135deg, #141e30, #243b55);
             color: white;
         }
         .glass-box {
@@ -23,6 +23,7 @@ st.markdown("""
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
         }
         h1, h2, h3 {
             text-align: center;
@@ -57,7 +58,7 @@ st.markdown('<div class="glass-box">', unsafe_allow_html=True)
 
 # Header
 st.markdown("<h1>💿 Data Sweeper - File Converter</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center;'>🚀 Convert CSV ↔️ Excel | Remove Duplicates | Fill Missing Data | Visualize Instantly!</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center;'>🚀 Developed by Muhammad Anas Jamshaid</p>", unsafe_allow_html=True)
 st.markdown("---")
 
 # File Uploader
