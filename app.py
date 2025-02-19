@@ -5,9 +5,9 @@ from io import BytesIO
 import openpyxl  # Ensure OpenPyXL is installed for Excel handling
 
 # Set up Modern UI
-st.set_page_config(page_title="💿 Data Sweeper", layout='wide', page_icon="🔄")
-st.title("💿 Data Sweeper - File Converter")
-st.write("🚀 Convert CSV ↔️ Excel | Remove Duplicates | Fill Missing Data | Visualize Your Data Instantly!")
+st.set_page_config(page_title="💿 Data Sweeper | Convert & Clean Data", layout='wide', page_icon="🔄")
+st.title("💿 Data Sweeper - File Converter & Data Cleaner")
+st.write("🚀 Convert CSV ↔️ Excel | Remove Duplicates | Fill Missing Data | Visualize & Optimize Your Data Instantly!")
 
 # Mobile Indication Message
 if st.session_state.get('is_mobile', False):
@@ -21,14 +21,14 @@ if st.session_state.get('is_mobile', False):
 
 # Sidebar UI
 st.sidebar.image("https://cdn-icons-png.flaticon.com/512/4228/4228684.png", width=120)
-st.sidebar.title("🔧 Data Sweeper Tools")
-st.sidebar.markdown("### 📂 Upload Your Files")
+st.sidebar.title("🔧 Data Sweeper Tools - Optimize Your Data!")
+st.sidebar.markdown("### 📂 Upload & Process Files")
 st.sidebar.image("https://cdn-icons-png.flaticon.com/512/3135/3135715.png", width=50)  # Professional icon
 
 # Developer Credit
 st.sidebar.markdown("---")
 st.sidebar.markdown("### 🛠️ Developed By")
-st.sidebar.markdown("**Muhammad Ans Jamshaid**")
+st.sidebar.markdown("**Muhammad Ans Jamshaid | Data Processing Expert**")
 st.sidebar.markdown("---")
 
 # File Uploader
@@ -37,7 +37,7 @@ uploaded_files = st.sidebar.file_uploader(
 )
 
 if uploaded_files:
-    st.sidebar.success("✅ Files Uploaded Successfully!")
+    st.sidebar.success("✅ Files Uploaded & Ready for Processing!")
     for file in uploaded_files:
         file_ext = os.path.splitext(file.name)[-1].lower()
         
@@ -63,7 +63,7 @@ if uploaded_files:
         st.dataframe(df.head())
 
         # Data Cleaning Options
-        st.subheader("🛠 Data Cleaning Options")
+        st.subheader("🛠 Data Cleaning & Optimization")
         enable_cleaning = st.sidebar.checkbox(f"✅ Enable Cleaning for {file.name}")
 
         if enable_cleaning:
@@ -79,21 +79,21 @@ if uploaded_files:
                 if st.button(f"📊 Fill Missing Values ({file.name})"):
                     numeric_cols = df.select_dtypes(include=['number']).columns
                     df[numeric_cols] = df[numeric_cols].fillna(df[numeric_cols].mean())
-                    st.success("✅ **Missing Values Filled!**")
+                    st.success("✅ **Missing Values Filled for Numeric Columns!**")
 
         # Column Selection
-        st.subheader("🎯 Select Columns for Conversion")
+        st.subheader("🎯 Select Columns for Conversion & Analysis")
         selected_columns = st.multiselect(f"Choose Columns for {file.name}", df.columns, default=df.columns)
         df = df[selected_columns]
 
         # Data Visualization
-        st.subheader("📊 Data Visualization")
+        st.subheader("📊 Data Insights & Visualization")
         show_charts = st.sidebar.checkbox(f"📈 Show Charts for {file.name}")
         if show_charts:
             st.bar_chart(df.select_dtypes(include='number').iloc[:, :2])
 
         # File Conversion Options
-        st.subheader("🔄 File Conversion")
+        st.subheader("🔄 File Conversion & Download")
         conversion_type = st.sidebar.radio(f"Convert {file.name} to:", ["CSV", "Excel"], key=file.name)
         if st.button(f"Convert {file.name}"):
             buffer = BytesIO()
@@ -115,4 +115,4 @@ if uploaded_files:
                 mime=mime_type
             )
 
-st.sidebar.info("🚀 All Files Processed Successfully!")
+st.sidebar.info("🚀 All Files Processed & Optimized Successfully!")
